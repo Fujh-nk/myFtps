@@ -1,13 +1,18 @@
 import socket
-import struct
 import pickle
 import sys
-import time
 import os
+
+
+class FtpServer:
+    def __init__(self):
+        pass
+
 
 if __name__ == '__main__':
     host = socket.gethostname()
     port = 6666
+    file_path = '../workspace/text.txt'
     try:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     except socket.error:
@@ -17,6 +22,19 @@ if __name__ == '__main__':
     server_socket.listen()
     while True:
         conn, addr = server_socket.accept()
-        print(conn, addr)
+        file_meta = {
+            'name': 'text.txt',
+            'size': os.path.getsize(file_path)
+        }
+
+        conn.send(pickle.dumps(file_meta))
+        with open(file_path, 'rb') as f:
+            data = f.read(4 * 1024)
+        file_content = {
+            'type': 'content',
+            'num': 0,
+            'content': data
+        }
+        conn.send(pickle.dumps(file_content))
         conn.close()
     pass
