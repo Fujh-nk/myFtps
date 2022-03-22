@@ -1,5 +1,4 @@
 import socket
-import struct
 import pickle
 import sys
 import time
@@ -27,6 +26,5 @@ if __name__ == '__main__':
     file_content = pickle.loads(client_socket.recv(5 * 1024))
     with open(os.path.join(work_dir_root, file_meta['name']), 'wb') as f:
         f.write(file_content['content'])
-
     client_socket.close()
     pass
