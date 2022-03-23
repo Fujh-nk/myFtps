@@ -4,8 +4,10 @@ import sys
 import os
 
 
+
 class FtpServer:
     def __init__(self):
+        self.inline_users = []
         pass
 
 

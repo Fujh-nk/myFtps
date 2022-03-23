@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="update for dev envs description">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="update for database(using sqlite) op">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/mydb.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/mydb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/userdbop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/userdbop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/ftpserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/ftpserver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +180,7 @@
       <option name="presentableId" value="Default" />
       <updated>1647938123713</updated>
       <workItem from="1647938125962" duration="9575000" />
-      <workItem from="1647995142785" duration="15865000" />
+      <workItem from="1647995142785" duration="21721000" />
     </task>
     <task id="LOCAL-00001" summary="config">
       <created>1647938338993</created>
@@ -225,7 +224,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647995311396</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="update for database(using sqlite) op">
+      <created>1648018519516</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1648018519516</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,7 +254,8 @@
     <MESSAGE value="Test a simple ftp" />
     <MESSAGE value="add db file structure" />
     <MESSAGE value="update for dev envs description" />
-    <option name="LAST_COMMIT_MESSAGE" value="update for dev envs description" />
+    <MESSAGE value="update for database(using sqlite) op" />
+    <option name="LAST_COMMIT_MESSAGE" value="update for database(using sqlite) op" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/myFtps$main.coverage" NAME="main Coverage Results" MODIFIED="1647947838498" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Client/src" />
@@ -256,7 +263,7 @@
     <SUITE FILE_PATH="coverage/myFtps$mydb.coverage" NAME="mydb Coverage Results" MODIFIED="1648016826341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
     <SUITE FILE_PATH="coverage/myFtps$dbutils.coverage" NAME="dbutils Coverage Results" MODIFIED="1647954164718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
     <SUITE FILE_PATH="coverage/myFtps$ftpserver.coverage" NAME="ftpserver Coverage Results" MODIFIED="1647952360588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
-    <SUITE FILE_PATH="coverage/myFtps$userdbop.coverage" NAME="userdbop Coverage Results" MODIFIED="1648018389030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
+    <SUITE FILE_PATH="coverage/myFtps$userdbop.coverage" NAME="userdbop Coverage Results" MODIFIED="1648018661017" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
     <SUITE FILE_PATH="coverage/myFtps$mydb__1_.coverage" NAME="mydb (1) Coverage Results" MODIFIED="1647997215730" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
   </component>
 </project>
