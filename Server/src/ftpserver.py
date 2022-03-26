@@ -3,6 +3,7 @@ import socketserver
 import pickle
 import sys
 import os
+from serverlog import MyLogger
 
 HOST = socket.gethostname()
 PORT = 6666
@@ -48,7 +49,7 @@ class FtpServer:
         try:
             self.__inline_users.remove(user)
         except ValueError:
-            pass
+            MyLogger.warning('User({}) logged out tried to log out'.format(user))
 
 
 if __name__ == '__main__':
