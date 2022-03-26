@@ -1,4 +1,5 @@
 import socket
+import socketserver
 import pickle
 import sys
 import os
@@ -8,17 +9,50 @@ PORT = 6666
 FILE_PATH_ROOT = '../workspace'
 
 
+class MyHandle(socketserver.StreamRequestHandler):
+    def handle(self):
+        pass
+
+    def user_reg(self):
+        pass
+
+    def user_login(self):
+        pass
+
+    def user_logout(self):
+        pass
+
+    def user_del(self):
+        pass
+
+
 class FtpServer:
     def __init__(self, root):
         self.__inline_users = []
         self.__root = root
-        pass
+        self.__socket = None
 
     def start_server(self, host, port):
-        pass
+        self.__socket = socketserver.TCPServer((host, port), MyHandle)
+        try:
+            self.__socket.serve_forever()
+        finally:
+            if self.__socket:
+                self.__socket.server_close()
+
+    def add_inline_user(self, user):
+        if user not in self.__inline_users:
+            self.__inline_users.append(user)
+
+    def del_inline_user(self, user):
+        try:
+            self.__inline_users.remove(user)
+        except ValueError:
+            pass
 
 
 if __name__ == '__main__':
+    '''
     host = socket.gethostname()
     port = 6666
     file_path = '../workspace/text.txt'
@@ -46,4 +80,7 @@ if __name__ == '__main__':
         }
         conn.send(pickle.dumps(file_content))
         conn.close()
+    '''
+    l = [1, 2, 4]
+    l.remove(3)
     pass
