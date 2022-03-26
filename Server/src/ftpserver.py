@@ -3,11 +3,18 @@ import pickle
 import sys
 import os
 
+HOST = socket.gethostname()
+PORT = 6666
+FILE_PATH_ROOT = '../workspace'
 
 
 class FtpServer:
-    def __init__(self):
-        self.inline_users = []
+    def __init__(self, root):
+        self.__inline_users = []
+        self.__root = root
+        pass
+
+    def start_server(self, host, port):
         pass
 
 
