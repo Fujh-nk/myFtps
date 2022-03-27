@@ -1,4 +1,4 @@
-from mydb import MyDBConn
+from Server.src.ops.mydb import MyDBConn
 from werkzeug.security import generate_password_hash, check_password_hash
 
 HASH_METHOD = 'pbkdf2:sha256'

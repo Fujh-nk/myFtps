@@ -40,3 +40,7 @@ SERVER_OP:
     SERVER_REJ          404 服务器拒绝服务（权限不够等情况）
     SERVER_ERR          400 服务器因其他原因未完成请求
     SERVER_OK           200 服务器完成请求并响应
+
+##use string and getattr for statcode
+应用层传输包格式为dict
+{'op_type': $op_type$, 'op_code': $op_code$, 'content': $content$}
