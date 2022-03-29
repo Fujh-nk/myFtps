@@ -2,7 +2,7 @@ import os
 import logging
 from logging import handlers
 
-LOG_FILE_PATH = '../log'
+LOG_FILE_PATH = r'..\log'
 
 
 class MyLogger:

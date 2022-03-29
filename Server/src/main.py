@@ -5,7 +5,7 @@ import sys
 from Server.src.ops import mydb
 
 
-def init():
+def init_db():
     conn = mydb.MyDBConn()
     try:
         conn.cursor.execute(mydb.CREATE_TABLE_SQL)
@@ -14,6 +14,10 @@ def init():
         sys.exit()
     finally:
         conn.release()
+
+
+def init():
+    init_db()
 
 
 if __name__ == '__main__':

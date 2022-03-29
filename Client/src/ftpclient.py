@@ -13,7 +13,7 @@ class FtpClient:
 if __name__ == '__main__':
     host = socket.gethostname()
     port = 6666
-    work_dir_root = '../workspace'
+    work_dir_root = r'..\workspace'
     try:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     except socket.error:

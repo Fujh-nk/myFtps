@@ -98,6 +98,20 @@ def update_user_permission(username, privilege):
         conn.release()
 
 
+def release_cancelled_user():
+    """
+    release cancelled users, delete cancelled users from database
+    :return: tuple of cancelled users' username
+    """
+    conn = MyDBConn()
+    try:
+        users = conn.select("SELECT USERNAME FROM USERS WHERE CANCELLED = ?", (True, ))
+        conn.update("DELETE FROM USERS WHERE CANCELLED = ?", (True, ))
+        return tuple(item[0] for item in users)
+    finally:
+        conn.release()
+
+
 if __name__ == '__main__':
     '''
     passwd = generate_password_hash('password', method='pbkdf2:sha256', salt_length=8)
@@ -107,16 +121,24 @@ if __name__ == '__main__':
     print(result)
     '''
     print(add_user('test', '123456'))
+    print(add_user('test2', '123456'))
+    print(add_user('test3', '123456'))
     conn = MyDBConn()
     print(conn.select("SELECT * FROM USERS WHERE USERNAME = ?", ('test', )))
     print(update_user_permission('test', 10))
     print(conn.select("SELECT * FROM USERS WHERE USERNAME = ?", ('test', )))
-    print(check_user_passwd('test', '123456'))
-    print(check_user_passwd('test', '12346'))
+    # print(check_user_passwd('test', '123456'))
+    # print(check_user_passwd('test', '12346'))
     print(cancel_user('test'))
+    print(cancel_user('test2'))
+    print(cancel_user('test3'))
     print(conn.select("SELECT * FROM USERS WHERE USERNAME = ?", ('test', )))
-    print(check_user_passwd('test', '123456'))
-    print(check_user_passwd('test', '12346'))
+    # print(check_user_passwd('test', '123456'))
+    # print(check_user_passwd('test', '12346'))
     # conn.update("DELETE FROM USERS WHERE USERNAME = ?", ('test',))
+    print(release_cancelled_user())
+    print(conn.select("SELECT * FROM USERS WHERE USERNAME = ?", ('test',)))
     conn.release()
+
+
 

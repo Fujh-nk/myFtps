@@ -1,8 +1,12 @@
 import Server.src.statcode
+from acl_op import user_access
+import shutil
 
 
-def dir_get():
-    pass
+def dir_get(user, cwd):
+    if user_access(user, cwd):
+        pass
+    return
 
 
 def dir_create():
@@ -14,4 +18,5 @@ def dir_del():
 
 
 if __name__ == '__main__':
+    shutil.rmtree(r'..\..\workspace\test')
     pass

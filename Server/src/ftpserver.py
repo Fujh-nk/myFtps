@@ -1,3 +1,4 @@
+import os.path
 import socket
 import socketserver
 import threading
@@ -9,7 +10,7 @@ from Server.src.ops import dir_op, file_op, user_op, userdbop
 
 HOST = socket.gethostname()
 PORT = 6666
-FILE_PATH_ROOT = '../workspace'
+FILE_PATH_ROOT = r'..\workspace'
 CONTENT_SIZE = 4 * 1024
 BUFFER_SIZE = 5 * 1024
 
@@ -40,6 +41,7 @@ class FtpServer:
         self.conn = conn
         self.address = conn.client_address
         self.username = None
+        self.cwd = None
 
     @staticmethod
     def start_server(host, port):
@@ -94,6 +96,8 @@ class FtpServer:
         closed = False
         ret_data = {'op_type': 'server_op', 'op_code': statcode.SERVER_ERR}
         if code == statcode.USER_REG_REQ:
+            if not user_op.username_valid(content['username']):
+                return
             status = user_op.user_reg(content['username'], content['password'])
             if status == userdbop.STATUS_OK:
                 MyLogger.info('User({}) been registered'.format(content['username']))
@@ -106,7 +110,7 @@ class FtpServer:
         elif code == statcode.USER_LOGIN_REQ:
             status = user_op.user_login(content['username'], content['password'])
             if status == userdbop.STATUS_OK:
-                self.username = content['username']
+                self.cwd = self.username = content['username']
                 FtpServer.add_inline_user(self.username)
                 ret_data['op_code'] = statcode.SERVER_OK
             elif status == userdbop.STATUS_NOT_EXIST or status == userdbop.STATUS_WRONG_PASSWD:
@@ -146,25 +150,23 @@ class FtpServer:
             self.conn.close()
 
     def dir_op(self, code, content):
-        if code == statcode.USER_REG_REQ:
+        ret_data = {'op_type': 'server_op', 'op_code': statcode.SERVER_ERR}
+        if code == statcode.DIR_REQ:
             pass
-        elif code == statcode.USER_LOGIN_REQ:
+        elif code == statcode.DIR_CREATE_REQ:
             pass
-        elif code == statcode.USER_LOGOUT_REQ:
-            pass
-        elif code == statcode.USER_DEL_REQ:
+        elif code == statcode.DIR_DEL_REQ:
             pass
         else:
             self.__log_op_warning('dir', code)
 
     def file_op(self, code, content):
-        if code == statcode.USER_REG_REQ:
+        ret_data = {'op_type': 'server_op', 'op_code': statcode.SERVER_ERR}
+        if code == statcode.FILE_DOWNLOAD_REQ:
             pass
-        elif code == statcode.USER_LOGIN_REQ:
+        elif code == statcode.FILE_UPLOAD_REQ:
             pass
-        elif code == statcode.USER_LOGOUT_REQ:
-            pass
-        elif code == statcode.USER_DEL_REQ:
+        elif code == statcode.FILE_DEL_REQ:
             pass
         else:
             self.__log_op_warning('file', code)

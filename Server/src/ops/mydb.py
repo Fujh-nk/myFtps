@@ -2,7 +2,7 @@ import sqlite3
 from dbutils.pooled_db import PooledDB
 
 config = {
-    'database': '../MyFtps.db',
+    'database': r'..\..\MyFtps.db',
     'maxconnections': 0,
     'mincached': 5,
     'maxcached': 0,
