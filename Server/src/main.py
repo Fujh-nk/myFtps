@@ -3,6 +3,7 @@ from serverlog import MyLogger
 import sqlite3
 import sys
 from Server.src.ops import mydb, user_op
+import ftpserver
 
 
 LOG_PATH = r'..\log'

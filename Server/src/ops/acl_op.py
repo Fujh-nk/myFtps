@@ -22,6 +22,11 @@ class FailError(AclError):
 
 
 def _add_dacl(user):
+    """
+    add user access property on user's root path
+    :param user: username
+    :return: None
+    """
     sid, domain, stype = win32security.LookupAccountName(None, user)
     _path = os.path.join(WORK_REL_PATH, user)
     sd = win32security.GetFileSecurity(_path, win32security.DACL_SECURITY_INFORMATION)
@@ -32,6 +37,12 @@ def _add_dacl(user):
 
 
 def acl_user(user, op):
+    """
+    add or del net user at local host
+    :param user: username
+    :param op: add or del
+    :return: None
+    """
     sp = subprocess.Popen(
         'net user {} /{}'.format(user, op),
         shell=True,
@@ -59,6 +70,12 @@ def acl_user(user, op):
 
 
 def _access(user, abspath):
+    """
+    judge if user can access abspath or not
+    :param user: username
+    :param abspath: the absolute file path
+    :return: a boolean
+    """
     sd = win32security.GetFileSecurity(abspath, win32security.DACL_SECURITY_INFORMATION)
     dacl = sd.GetSecurityDescriptorDacl()
     for i in range(dacl.GetAceCount()):
@@ -73,6 +90,12 @@ def _access(user, abspath):
 
 
 def user_access(user, cwd):
+    """
+    judge if user has the property to access cwd
+    :param user: username
+    :param cwd: the target path wanted, cwd is a relative path
+    :return: a boolean
+    """
     user_root = os.path.join(WORK_REL_PATH, user)
     abspath = os.path.join(WORK_REL_PATH, cwd)
     if user_root not in abspath:

@@ -1,8 +1,13 @@
-import userdb_op
-import acl_op
+from Server.src.ops import userdb_op
+from Server.src.ops import acl_op
 
 
 def username_valid(username):
+    """
+    judge if username is valid or not
+    :param username: username(a string)
+    :return: a boolean
+    """
     valid = True
     for ch in username:
         if ch not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_':
@@ -11,6 +16,12 @@ def username_valid(username):
 
 
 def user_reg(user, passwd):
+    """
+    try to register user in database and local host
+    :param user: username
+    :param passwd: password used for log in
+    :return: this operation status
+    """
     status = userdb_op.add_user(user, passwd)
     if status == userdb_op.STATUS_OK:
         try:
@@ -21,10 +32,22 @@ def user_reg(user, passwd):
 
 
 def user_login(user, passwd):
+    """
+    try to log in with user and passwd
+    :param user: username
+    :param passwd: password used for log in
+    :return: this operation status
+    """
     return userdb_op.check_user_passwd(user, passwd)
 
 
 def user_del(user, passwd):
+    """
+    try to del user with user and passwd
+    :param user: username
+    :param passwd: password used for log in
+    :return: this operation status
+    """
     status = userdb_op.check_user_passwd(user, passwd)
     if status == userdb_op.STATUS_OK:
         status = userdb_op.cancel_user(user)
@@ -32,6 +55,10 @@ def user_del(user, passwd):
 
 
 def user_release():
+    """
+    release cancelled username at database and local host
+    :return: the users that failed to del at local host
+    """
     failed = []
     for user in userdb_op.release_cancelled_user():
         try:
