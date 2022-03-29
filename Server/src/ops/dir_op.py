@@ -1,12 +1,12 @@
-import Server.src.statcode
+from Server.src import statcode
 from acl_op import user_access
 import shutil
 
 
 def dir_get(user, cwd):
-    if user_access(user, cwd):
-        pass
-    return
+    if not user_access(user, cwd):
+        return statcode.SERVER_REJ
+
 
 
 def dir_create():

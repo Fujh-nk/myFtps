@@ -2,6 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/Server/src/ops/mydb.py" dialect="SQLite" />
-    <file url="file://$PROJECT_DIR$/Server/src/ops/userdbop.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/Server/src/ops/userdb_op.py" dialect="GenericSQL" />
   </component>
 </project>

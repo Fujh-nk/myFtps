@@ -5,13 +5,19 @@ import win32security
 
 
 WORK_REL_PATH = r'..\..\workspace'
+ACL_OP_ADD = 'add'
+ACL_OP_DEL = 'del'
 
 
-class DenyError(Exception):
+class AclError(Exception):
     pass
 
 
-class FailError(Exception):
+class DenyError(AclError):
+    pass
+
+
+class FailError(AclError):
     pass
 
 
@@ -25,9 +31,9 @@ def _add_dacl(user):
     win32security.SetFileSecurity(_path, win32security.DACL_SECURITY_INFORMATION, sd)
 
 
-def add_user(user):
+def acl_user(user, op):
     sp = subprocess.Popen(
-        'net user {} /add'.format(user),
+        'net user {} /{}'.format(user, op),
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
@@ -39,16 +45,17 @@ def add_user(user):
     if stdout.find("失败") > -1:
         raise FailError()
 
-    try:
-        _add_dacl(user)
-    except Exception:
-        subprocess.Popen(
-            'net user {} /del'.format(user),
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-        raise FailError()
+    if op == ACL_OP_ADD:
+        try:
+            _add_dacl(user)
+        except Exception:
+            subprocess.Popen(
+                'net user {} /del'.format(user),
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+            raise FailError()
 
 
 def _access(user, abspath):
@@ -74,7 +81,7 @@ def user_access(user, cwd):
 
 
 if __name__ == '__main__':
-    add_user('test')
+    acl_user('test', ACL_OP_ADD)
     print(user_access('test', os.path.join(WORK_REL_PATH, 'test')))
     print(user_access('test', os.path.join(WORK_REL_PATH, r'test\1.txt')))
     pass

@@ -6,7 +6,7 @@ import pickle
 import sys
 from serverlog import MyLogger
 import statcode
-from Server.src.ops import dir_op, file_op, user_op, userdbop
+from Server.src.ops import dir_op, file_op, user_op, userdb_op
 
 HOST = socket.gethostname()
 PORT = 6666
@@ -99,24 +99,24 @@ class FtpServer:
             if not user_op.username_valid(content['username']):
                 return
             status = user_op.user_reg(content['username'], content['password'])
-            if status == userdbop.STATUS_OK:
+            if status == userdb_op.STATUS_OK:
                 MyLogger.info('User({}) been registered'.format(content['username']))
                 ret_data['op_code'] = statcode.SERVER_OK
-            elif status == userdbop.STATUS_USER_EXISTED:
+            elif status == userdb_op.STATUS_USER_EXISTED:
                 ret_data['content'] = 'this username had been used'
             else:
                 MyLogger.info('{} failed to register with unknown error'.format(self.address))
                 ret_data['content'] = 'Unknown error'
         elif code == statcode.USER_LOGIN_REQ:
             status = user_op.user_login(content['username'], content['password'])
-            if status == userdbop.STATUS_OK:
+            if status == userdb_op.STATUS_OK:
                 self.cwd = self.username = content['username']
                 FtpServer.add_inline_user(self.username)
                 ret_data['op_code'] = statcode.SERVER_OK
-            elif status == userdbop.STATUS_NOT_EXIST or status == userdbop.STATUS_WRONG_PASSWD:
+            elif status == userdb_op.STATUS_NOT_EXIST or status == userdb_op.STATUS_WRONG_PASSWD:
                 MyLogger.info('{} tried to login with wrong username or password'.format(self.address))
                 ret_data['content'] = 'Wrong username or password'
-            elif status == userdbop.STATUS_USER_CANCELED:
+            elif status == userdb_op.STATUS_USER_CANCELED:
                 MyLogger.info('{} tried to login with cancelled user({})'.format(self.address, content['username']))
                 ret_data['content'] = 'User had been cancelled'
             else:
@@ -128,15 +128,15 @@ class FtpServer:
             closed = True
         elif code == statcode.USER_DEL_REQ:
             status = user_op.user_del(content['username'], content['password'])
-            if status == userdbop.STATUS_OK:
+            if status == userdb_op.STATUS_OK:
                 if content['username'] in FtpServer.get_inline_users():
                     FtpServer.del_inline_user(content['username'])
                 ret_data['op_code'] = statcode.SERVER_OK
                 closed = True
-            elif status == userdbop.STATUS_NOT_EXIST:
+            elif status == userdb_op.STATUS_NOT_EXIST:
                 MyLogger.info('{} tried to delete an unknown user'.format(self.address))
                 ret_data['content'] = 'Unknown username'
-            elif status == userdbop.STATUS_WRONG_PASSWD:
+            elif status == userdb_op.STATUS_WRONG_PASSWD:
                 MyLogger.info('{} tried to delete user({}) with wrong password'.format(self.address, content['username']))
                 ret_data['content'] = 'Wrong username or password'
             else:

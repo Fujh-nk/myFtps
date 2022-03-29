@@ -1,5 +1,6 @@
 import sqlite3
 from dbutils.pooled_db import PooledDB
+from Server.src.serverlog import MyLogger
 
 config = {
     'database': r'..\..\MyFtps.db',
@@ -50,7 +51,7 @@ class MyDBConn:
             flag = True
         except sqlite3.IntegrityError:
             self.conn.rollback()
-            # add error log
+            MyLogger.error('Database update error: {}'.format((sql, params)))
         return flag
 
     def select(self, sql, params):
@@ -65,7 +66,7 @@ class MyDBConn:
             self.cursor.execute(sql, params)
             result = self.cursor.fetchall()
         except sqlite3.OperationalError:
-            # add error log
+            MyLogger.error('Database select error: {}'.format((sql, params)))
             pass
         return tuple(result)
 

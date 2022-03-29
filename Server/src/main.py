@@ -1,8 +1,12 @@
+import os
 from serverlog import MyLogger
 import sqlite3
 import sys
+from Server.src.ops import mydb, user_op
 
-from Server.src.ops import mydb
+
+LOG_PATH = r'..\log'
+ROOT_PATH = r'..\workspace'
 
 
 def init_db():
@@ -16,10 +20,24 @@ def init_db():
         conn.release()
 
 
+def init_dir():
+    if not os.path.exists(LOG_PATH):
+        os.mkdir(LOG_PATH)
+    if not os.path.exists(ROOT_PATH):
+        os.mkdir(ROOT_PATH)
+
+
 def init():
     init_db()
+    init_dir()
+
+
+def release_user():
+    failed = user_op.user_release()
+    if len(failed) != 0:
+        MyLogger.error('User released: {} failed'.format(failed))
 
 
 if __name__ == '__main__':
-
+    print(os.listdir('.'))
     pass
