@@ -3,8 +3,7 @@ import subprocess
 import ntsecuritycon
 import win32security
 
-
-WORK_REL_PATH = r'..\..\workspace'
+WORK_REL_PATH = r'..\workspace'
 ACL_OP_ADD = 'add'
 ACL_OP_DEL = 'del'
 
@@ -104,6 +103,7 @@ def user_access(user, cwd):
 
 
 if __name__ == '__main__':
+    os.chdir(r'..\.')
     acl_user('test', ACL_OP_ADD)
     print(user_access('test', os.path.join(WORK_REL_PATH, 'test')))
     print(user_access('test', os.path.join(WORK_REL_PATH, r'test\1.txt')))

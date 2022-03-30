@@ -63,6 +63,7 @@ def dir_del(user, cwd, obj):
 
 
 if __name__ == '__main__':
+    os.chdir(r'..\.')
     # shutil.rmtree(r'..\..\workspace\test')
     print(dir_get('test', 'test'))
     dir_del('test', 'test', 'abc')

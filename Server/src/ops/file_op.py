@@ -55,5 +55,6 @@ def file_del(user, cwd, obj):
 
 
 if __name__ == '__main__':
+    os.chdir(r'..\.')
     file_del('test', 'test', '1.txt')
     pass

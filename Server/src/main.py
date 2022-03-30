@@ -5,7 +5,6 @@ import sys
 from Server.src.ops import mydb, user_op
 import ftpserver
 
-
 LOG_PATH = r'..\log'
 ROOT_PATH = r'..\workspace'
 
@@ -44,5 +43,6 @@ def release_user():
 
 
 if __name__ == '__main__':
-    print(os.listdir('.'))
+    init()
+    ftpserver.FtpServer.start_server(ftpserver.HOST, ftpserver.PORT)
     pass

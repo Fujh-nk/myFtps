@@ -1,9 +1,11 @@
+import os
 import sqlite3
 from dbutils.pooled_db import PooledDB
 from Server.src.serverlog import MyLogger
 
+
 config = {
-    'database': r'..\..\MyFtps.db',
+    'database': r'..\MyFtps.db',
     'maxconnections': 0,
     'mincached': 5,
     'maxcached': 0,
@@ -80,6 +82,7 @@ class MyDBConn:
 
 
 if __name__ == '__main__':
+    os.chdir(r'..\.')
     conn = MyDBConn()
     conn.update("INSERT INTO USERS (USERNAME, PASSWORD) VALUES (?, ?)", ('test', '123456'))
     print(conn.select("SELECT * FROM USERS WHERE USERNAME = ? AND PASSWORD = ?", ('test', '123456')))
