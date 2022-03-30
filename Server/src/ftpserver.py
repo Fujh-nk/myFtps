@@ -4,6 +4,7 @@ import socketserver
 import pickle
 import sys
 import threading
+from time import sleep
 
 from serverlog import MyLogger
 import statcode
@@ -204,7 +205,7 @@ class FtpServer:
         if code == statcode.FILE_DOWNLOAD_REQ:
             ret_data['op_code'], self.send_fd = file_op.file_download(self.username, self.cwd, content)
             self.send_name = content
-            threading.Thread(target=self.send_file())
+            threading.Thread(target=self.send_file).start()
         elif code == statcode.FILE_UPLOAD_REQ:
             ret_data['op_code'], self.recv_fd = file_op.file_download(self.username, self.cwd, content)
             self.recv_name = content
