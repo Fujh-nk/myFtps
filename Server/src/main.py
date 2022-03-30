@@ -22,10 +22,14 @@ def init_db():
 
 
 def init_dir():
-    if not os.path.exists(LOG_PATH):
-        os.mkdir(LOG_PATH)
-    if not os.path.exists(ROOT_PATH):
-        os.mkdir(ROOT_PATH)
+    try:
+        if not os.path.exists(LOG_PATH):
+            os.mkdir(LOG_PATH)
+        if not os.path.exists(ROOT_PATH):
+            os.mkdir(ROOT_PATH)
+    except OSError:
+        MyLogger.critical('Failed to create work path')
+        sys.exit()
 
 
 def init():

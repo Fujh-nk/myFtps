@@ -2,19 +2,6 @@ from Server.src.ops import userdb_op
 from Server.src.ops import acl_op
 
 
-def username_valid(username):
-    """
-    judge if username is valid or not
-    :param username: username(a string)
-    :return: a boolean
-    """
-    valid = True
-    for ch in username:
-        if ch not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_':
-            valid = False
-    return valid
-
-
 def user_reg(user, passwd):
     """
     try to register user in database and local host
