@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="update for server code">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="debug for ftpserver.py (threading error)">
       <change beforePath="$PROJECT_DIR$/Server/src/ftpserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/ftpserver.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -201,7 +200,7 @@
       <workItem from="1648431294777" duration="18401000" />
       <workItem from="1648469441736" duration="4014000" />
       <workItem from="1648516935659" duration="19135000" />
-      <workItem from="1648608928131" duration="13023000" />
+      <workItem from="1648608928131" duration="13107000" />
     </task>
     <task id="LOCAL-00001" summary="config">
       <created>1647938338993</created>
@@ -329,7 +328,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648631060300</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="debug for ftpserver.py (threading error)">
+      <created>1648632129689</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1648632129689</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,7 +371,8 @@
     <MESSAGE value="update for file name and debug" />
     <MESSAGE value="update for acl_op.py and user_op.py annotation" />
     <MESSAGE value="update for server code" />
-    <option name="LAST_COMMIT_MESSAGE" value="update for server code" />
+    <MESSAGE value="debug for ftpserver.py (threading error)" />
+    <option name="LAST_COMMIT_MESSAGE" value="debug for ftpserver.py (threading error)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/myFtps$ftpclient.coverage" NAME="ftpclient Coverage Results" MODIFIED="1648286075291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Client/src" />

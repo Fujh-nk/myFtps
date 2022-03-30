@@ -4,7 +4,6 @@ import socketserver
 import pickle
 import sys
 import threading
-from time import sleep
 
 from serverlog import MyLogger
 import statcode
