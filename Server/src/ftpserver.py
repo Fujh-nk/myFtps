@@ -4,7 +4,7 @@ import socketserver
 import pickle
 import sys
 import threading
-
+import ssl
 from serverlog import MyLogger
 import statcode
 from Server.src.ops import dir_op, file_op, user_op, userdb_op
@@ -15,6 +15,8 @@ FILE_PATH_ROOT = r'..\workspace'
 CONTENT_SIZE = 4 * 1024
 BUFFER_SIZE = 5 * 1024
 VALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_'
+CERT_FILE = r'..\..\cert.pem'
+KEY_FILE = r'..\..\key.pem'
 
 
 def str_valid(_str):
@@ -47,6 +49,27 @@ class MyHandle(socketserver.StreamRequestHandler):
                                                                                                   self.request.client_address))
 
 
+class MySSLTCPServer(socketserver.TCPServer):
+    def __init__(self, address, handle, cert, key, ssl_version=ssl.PROTOCOL_TLSv1):
+        super().__init__(address, handle)
+        self.cert = cert
+        self.key = key
+        self.ssl_version = ssl_version
+
+    def get_request(self):
+        conn, addr = self.socket.accept()
+        ssl_conn = ssl.wrap_socket(conn,
+                                   server_side=True,
+                                   certfile=self.cert,
+                                   keyfile=self.key,
+                                   ssl_version=self.ssl_version)
+        return ssl_conn, addr
+
+
+class MySSLThreadingTCPServer(socketserver.ThreadingMixIn, MySSLTCPServer):
+    pass
+
+
 class FtpServer:
     __inline_users = []
     __lock = threading.Lock()
@@ -68,7 +91,7 @@ class FtpServer:
     @staticmethod
     def start_server(host, port):
         try:
-            FtpServer.__socket = socketserver.TCPServer((host, port), MyHandle)
+            FtpServer.__socket = MySSLThreadingTCPServer((host, port), MyHandle, CERT_FILE, KEY_FILE)
         except socket.error:
             MyLogger.critical('Failed to create ftp server')
             sys.exit()
