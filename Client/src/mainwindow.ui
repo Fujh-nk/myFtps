@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>575</width>
-    <height>502</height>
+    <width>920</width>
+    <height>614</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QPushButton" name="btn_download">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>360</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>460</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -30,10 +30,10 @@
    <widget class="QPushButton" name="btn_upload">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>130</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>180</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -43,10 +43,10 @@
    <widget class="QPushButton" name="btn_del">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>410</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>520</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -56,10 +56,10 @@
    <widget class="QPushButton" name="btn_new_dir">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>310</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>400</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -72,10 +72,10 @@
    <widget class="QPushButton" name="btn_cd">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>260</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>340</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -85,8 +85,8 @@
    <widget class="QToolButton" name="btn_files">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>130</y>
+      <x>730</x>
+      <y>190</y>
       <width>37</width>
       <height>21</height>
      </rect>
@@ -99,9 +99,9 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>130</y>
-      <width>361</width>
-      <height>20</height>
+      <y>190</y>
+      <width>691</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -114,23 +114,23 @@
    <widget class="QPushButton" name="btn_reflash">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>210</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>280</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Reflash</string>
+     <string>Refresh</string>
     </property>
    </widget>
    <widget class="QListWidget" name="cur_dir_list">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>210</y>
-      <width>391</width>
-      <height>221</height>
+      <y>280</y>
+      <width>691</width>
+      <height>281</height>
      </rect>
     </property>
    </widget>
@@ -138,9 +138,9 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>180</y>
-      <width>391</width>
-      <height>21</height>
+      <y>240</y>
+      <width>691</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -151,8 +151,8 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>160</y>
-      <width>491</width>
+      <y>230</y>
+      <width>841</width>
       <height>16</height>
      </rect>
     </property>
@@ -164,8 +164,8 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>110</y>
-      <width>491</width>
+      <y>160</y>
+      <width>841</width>
       <height>16</height>
      </rect>
     </property>
@@ -177,9 +177,9 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>30</y>
-      <width>54</width>
-      <height>21</height>
+      <y>10</y>
+      <width>691</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -190,52 +190,52 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>60</y>
-      <width>54</width>
-      <height>21</height>
+      <y>80</y>
+      <width>691</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Passwd</string>
+     <string>Password</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_login">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>20</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>10</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>login</string>
+     <string>Login</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_logout">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>50</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>60</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>logout</string>
+     <string>Logout</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_cancel">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>80</y>
-      <width>75</width>
-      <height>23</height>
+      <x>770</x>
+      <y>110</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>cancel</string>
+     <string>Cancel</string>
     </property>
     <property name="autoDefault">
      <bool>false</bool>
@@ -244,10 +244,10 @@
    <widget class="QLineEdit" name="edit_user">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>30</y>
-      <width>301</width>
-      <height>21</height>
+      <x>40</x>
+      <y>40</y>
+      <width>691</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -257,10 +257,10 @@
    <widget class="QLineEdit" name="edit_passwd">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>60</y>
-      <width>301</width>
-      <height>21</height>
+      <x>40</x>
+      <y>110</y>
+      <width>691</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -273,7 +273,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>575</width>
+     <width>920</width>
      <height>22</height>
     </rect>
    </property>

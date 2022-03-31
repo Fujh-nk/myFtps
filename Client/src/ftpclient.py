@@ -1,21 +1,120 @@
 import socket
 import pickle
 import sys
-import time
+import threading
 import os
+import ssl
+import statcode
+from time import sleep
+
+HOST = socket.gethostname()
+PORT = 6666
+SSL_VERSION = ssl.PROTOCOL_TLSv1
+WORK_DIR_ROOT = r'..\workspace'
+VALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_'
+CONTENT_SIZE = 4 * 1024
+BUFFER_SIZE = 5 * 1024
+CERT_FILE = r'..\..\cert.pem'
+KEY_FILE = r'..\..\key.pem'
+
+
+def str_valid(_str):
+    """
+    judge if a str is valid or not
+    :param _str: a string
+    :return: a boolean
+    """
+    valid = True
+    for ch in _str:
+        if ch not in VALID_CHARS:
+            valid = False
+    return valid
 
 
 class FtpClient:
-    def __init__(self):
+    def __init__(self, host, port, cert, key, ssl_version):
+        try:
+            self.__ssl_socket = ssl.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM),
+                                                server_side=False,
+                                                certfile=cert,
+                                                keyfile=key,
+                                                ssl_version=ssl_version)
+        except socket.error:
+            print("Failed to create socket!")
+            sys.exit()
+        self.host = host
+        self.port = port
+        self.username = None
+
+    def __heart_beat(self):
+        while self.username is not None:
+            sleep(30)
+            self.__ssl_socket.send(pickle.dumps({'op_code': statcode.SERVER_OP}))
+
+    def __send_req_and_recv_resp(self, frame):
+        self.__ssl_socket.send(pickle.dumps(frame))
+        return pickle.loads(self.__ssl_socket.recv(BUFFER_SIZE))
+
+    def login(self, user, passwd):
+        if self.username is not None:
+            return False, 'User had logged in'
+        frame = {'op_type': statcode.USER_OP,
+                 'op_code': statcode.USER_LOGIN_REQ,
+                 'content': {'username': user, 'password': passwd}}
+        resp = self.__send_req_and_recv_resp(frame)
+        if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
+            self.username = user
+            self.__ssl_socket.connect((self.host, self.port))
+            threading.Thread(target=self.__heart_beat).start()
+            return True, None
+        return False, resp['content']
+
+    def logout(self):
+        if self.username is not None:
+            frame = {'op_type': statcode.USER_OP,
+                     'op_code': statcode.USER_LOGOUT_REQ}
+            resp = self.__send_req_and_recv_resp(frame)
+            if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
+                self.__ssl_socket.close()
+                self.username = None
+                return True, None
+        return False, 'User not log in'
+
+    def cancel(self, user, passwd):
+        frame = {'op_type': statcode.USER_OP,
+                 'op_code': statcode.USER_DEL_REQ,
+                 'content': {'username': user, 'password': passwd}}
+        resp = self.__send_req_and_recv_resp(frame)
+        if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
+            return True, None
+        return False, resp['content']
+
+    def upload(self, obj):
+        pass
+
+    def refresh(self):
+        pass
+
+    def get_dir(self, obj):
+        pass
+
+    def create_dir(self, obj):
+        pass
+
+    def download(self, obj):
+        pass
+
+    def delete(self, obj):
         pass
 
 
 if __name__ == '__main__':
+    """
     host = socket.gethostname()
     port = 6666
     work_dir_root = r'..\workspace'
     try:
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket = ssl.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
     except socket.error:
         print("Failed to create socket!")
         sys.exit()
@@ -27,4 +126,5 @@ if __name__ == '__main__':
     with open(os.path.join(work_dir_root, file_meta['name']), 'wb') as f:
         f.write(file_content['content'])
     client_socket.close()
+    """
     pass
