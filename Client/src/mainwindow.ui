@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>575</width>
-    <height>368</height>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="btn_download">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>240</y>
+      <x>460</x>
+      <y>360</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="btn_upload">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>20</y>
+      <x>460</x>
+      <y>130</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="btn_del">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>290</y>
+      <x>460</x>
+      <y>410</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -56,8 +56,8 @@
    <widget class="QPushButton" name="btn_new_dir">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>190</y>
+      <x>460</x>
+      <y>310</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -72,8 +72,8 @@
    <widget class="QPushButton" name="btn_cd">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>140</y>
+      <x>460</x>
+      <y>260</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -85,8 +85,8 @@
    <widget class="QToolButton" name="btn_files">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>20</y>
+      <x>410</x>
+      <y>130</y>
       <width>37</width>
       <height>21</height>
      </rect>
@@ -98,8 +98,8 @@
    <widget class="QLabel" name="obj_path">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
+      <x>40</x>
+      <y>130</y>
       <width>361</width>
       <height>20</height>
      </rect>
@@ -114,8 +114,8 @@
    <widget class="QPushButton" name="btn_reflash">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>90</y>
+      <x>460</x>
+      <y>210</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -124,11 +124,11 @@
      <string>Reflash</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
+   <widget class="QListWidget" name="cur_dir_list">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>90</y>
+      <x>40</x>
+      <y>210</y>
       <width>391</width>
       <height>221</height>
      </rect>
@@ -137,14 +137,134 @@
    <widget class="QLabel" name="cur_path">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>60</y>
+      <x>40</x>
+      <y>180</y>
       <width>391</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Current Path</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>160</y>
+      <width>491</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>110</y>
+      <width>491</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tip_user">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>30</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>User</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tip_passwd">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>60</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Passwd</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_login">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>login</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_logout">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>50</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>logout</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_cancel">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>80</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>cancel</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edit_user">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>30</y>
+      <width>301</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edit_passwd">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>60</y>
+      <width>301</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
@@ -157,33 +277,8 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>User</string>
-    </property>
-    <addaction name="login"/>
-    <addaction name="logout"/>
-    <addaction name="separator"/>
-    <addaction name="cancell_user"/>
-   </widget>
-   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="login">
-   <property name="text">
-    <string>login</string>
-   </property>
-  </action>
-  <action name="logout">
-   <property name="text">
-    <string>logout</string>
-   </property>
-  </action>
-  <action name="cancell_user">
-   <property name="text">
-    <string>cancell user</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>
