@@ -207,7 +207,8 @@ class FtpServer:
         if self.username is None:
             return
         elif code == statcode.DIR_REQ:
-            self.cwd = os.path.join(self.cwd, content)
+            if content != '':
+                self.cwd = os.path.join(self.cwd, content)
             ret_data['op_code'], ret_data['content'] = dir_op.dir_get(self.username, self.cwd)
             self.__dir_log('get', self.cwd, ret_data['op_code'])
         elif code == statcode.DIR_CREATE_REQ:
@@ -307,4 +308,5 @@ if __name__ == '__main__':
         conn.send(pickle.dumps(file_content))
         conn.close()
     '''
+    print(os.path.join(FILE_PATH_ROOT, ''))
     pass
