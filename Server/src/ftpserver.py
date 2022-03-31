@@ -38,7 +38,7 @@ class MyHandle(socketserver.StreamRequestHandler):
         while True:
             data = pickle.loads(self.request.recv(BUFFER_SIZE))
             # any server_op package from client used for heart beat
-            if data['op_type'] == 'server_op':
+            if data['op_type'] == statcode.SERVER_OP:
                 continue
             if my_server is None:
                 my_server = FtpServer(self.request)
@@ -140,7 +140,7 @@ class FtpServer:
 
     def user_op(self, code, content):
         closed = False
-        ret_data = {'op_type': 'server_op', 'op_code': statcode.SERVER_ERR}
+        ret_data = {'op_type': statcode.SERVER_OP, 'op_code': statcode.SERVER_ERR}
         if code == statcode.USER_REG_REQ:
             if not str_valid(content['username']):
                 return
@@ -203,7 +203,7 @@ class FtpServer:
         MyLogger.info('User({}) {} dir({})-status({})'.format(self.username, op, path, code))
 
     def dir_op(self, code, content):
-        ret_data = {'op_type': 'server_op', 'op_code': statcode.SERVER_ERR}
+        ret_data = {'op_type': statcode.SERVER_OP, 'op_code': statcode.SERVER_ERR}
         if self.username is None:
             return
         elif code == statcode.DIR_REQ:
@@ -222,7 +222,7 @@ class FtpServer:
         self.conn.send(pickle.dumps(ret_data))
 
     def file_op(self, code, content):
-        ret_data = {'op_type': 'server_op', 'op_code': statcode.SERVER_ERR}
+        ret_data = {'op_type': statcode.SERVER_OP, 'op_code': statcode.SERVER_ERR}
         if self.username is None:
             return
         if code == statcode.FILE_DOWNLOAD_REQ:
