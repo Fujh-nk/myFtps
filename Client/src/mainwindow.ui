@@ -202,8 +202,8 @@
    <widget class="QPushButton" name="btn_login">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>10</y>
+      <x>640</x>
+      <y>40</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -215,8 +215,8 @@
    <widget class="QPushButton" name="btn_logout">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>60</y>
+      <x>640</x>
+      <y>110</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -246,7 +246,7 @@
      <rect>
       <x>40</x>
       <y>40</y>
-      <width>691</width>
+      <width>581</width>
       <height>41</height>
      </rect>
     </property>
@@ -259,12 +259,28 @@
      <rect>
       <x>40</x>
       <y>110</y>
-      <width>691</width>
+      <width>581</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_reg">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>40</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Register</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
