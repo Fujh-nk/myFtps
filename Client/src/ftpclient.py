@@ -89,23 +89,97 @@ class FtpClient:
             return True, None
         return False, resp['content']
 
-    def upload(self, obj):
-        pass
-
-    def refresh(self):
-        pass
-
     def get_dir(self, obj):
-        pass
+        frame = {'op_type': statcode.DIR_OP,
+                 'op_code': statcode.DIR_REQ,
+                 'content': obj}
+        resp = self.__send_req_and_recv_resp(frame)
+        if resp['op_type'] == statcode.SERVER_OP:
+            if resp['op_code'] == statcode.SERVER_OK:
+                return True, resp['content']
+            elif resp['op_code'] == statcode.SERVER_REJ:
+                return False, 'No right to access'
+        return False, 'Unknown Error'
 
     def create_dir(self, obj):
-        pass
+        frame = {'op_type': statcode.DIR_OP,
+                 'op_code': statcode.DIR_CREATE_REQ,
+                 'content': obj}
+        resp = self.__send_req_and_recv_resp(frame)
+        if resp['op_type'] == statcode.SERVER_OP:
+            if resp['op_code'] == statcode.SERVER_OK:
+                return True, None
+            elif resp['op_code'] == statcode.SERVER_REJ:
+                return False, 'No right to access'
+        return False, 'Unknown Error'
 
     def download(self, obj):
-        pass
+        frame = {'op_type': statcode.FILE_OP,
+                 'op_code': statcode.FILE_DOWNLOAD_REQ,
+                 'content': obj}
+        resp = self.__send_req_and_recv_resp(frame)
+        if resp['op_type'] == statcode.SERVER_OP:
+            if resp['op_code'] == statcode.SERVER_REJ:
+                return False, 'No right to access'
+            elif resp['op_code'] == statcode.SERVER_ERR:
+                return False, 'Unknown Error'
+        # start to recv file from server
+        try:
+            with open(os.path.join(WORK_DIR_ROOT, obj), 'wb') as f:
+                frame = pickle.loads(self.__ssl_socket.recv(BUFFER_SIZE))
+                if frame['op_type'] == statcode.FILE_OP and frame['op_code'] == statcode.FILE_META:
+                    obj_size = frame['content']['size']
+                    while obj_size > 0:
+                        frame = pickle.loads(self.__ssl_socket.recv(BUFFER_SIZE))
+                        if frame['op_type'] == statcode.FILE_OP and frame['op_code'] == statcode.FILE_CONT:
+                            f.write(frame['content'])
+                            obj_size -= len(frame['content'])
+                    if obj_size == 0:
+                        return True, None
+                    return False, 'File recv error'
+                else:
+                    return False, 'Server Error'
+        except OSError:
+            return False, 'Failed to open file'
 
-    def delete(self, obj):
-        pass
+    def upload(self, obj):
+        frame = {'op_type': statcode.FILE_OP,
+                 'op_code': statcode.FILE_UPLOAD_REQ,
+                 'content': os.path.basename(obj)}
+        resp = self.__send_req_and_recv_resp(frame)
+        if resp['op_type'] == statcode.SERVER_OP:
+            if resp['op_code'] == statcode.SERVER_REJ:
+                return False, 'No right to access'
+            elif resp['op_code'] == statcode.SERVER_ERR:
+                return False, 'Unknown Error'
+        # start to send file to server
+        try:
+            frame = {'op_type': statcode.FILE_OP,
+                     'op_code': statcode.FILE_META,
+                     'content': {'name': os.path.basename(obj), 'size': os.path.getsize(obj)}}
+            self.__ssl_socket.send(pickle.dumps(frame))
+            frame['op_code'] = statcode.FILE_CONT
+            with open(obj, 'rb') as f:
+                frame['content'] = f.read(CONTENT_SIZE)
+                self.__ssl_socket.send(pickle.dumps(frame))
+        except OSError:
+            return False, 'Failed to open file'
+        return True, None
+
+    def delete(self, obj, obj_type):
+        frame = {'op_type': statcode.FILE_OP,
+                 'op_code': statcode.FILE_DEL_REQ,
+                 'content': obj}
+        if obj_type == 'DIR':
+            frame['op_type'] = statcode.DIR_OP
+            frame['op_code'] = statcode.DIR_DEL_REQ
+        resp = self.__send_req_and_recv_resp(frame)
+        if resp['op_type'] == statcode.SERVER_OP:
+            if resp['op_code'] == statcode.SERVER_OK:
+                return True, None
+            elif resp['op_code'] == statcode.SERVER_REJ:
+                return False, 'No right to access'
+        return False, 'Unknown Error'
 
 
 if __name__ == '__main__':

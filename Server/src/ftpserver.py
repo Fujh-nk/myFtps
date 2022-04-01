@@ -269,7 +269,7 @@ class FtpServer:
     def recv_file(self, content):
         self.cur_recv_size += len(content)
         self.recv_fd.write(content)
-        if self.cur_recv_size == self.obj_recv_size:
+        if self.cur_recv_size >= self.obj_recv_size:
             self.recv_fd.close()
             self.recv_fd = None
             self.obj_recv_size = self.cur_recv_size = 0
