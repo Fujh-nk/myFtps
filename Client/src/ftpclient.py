@@ -7,28 +7,9 @@ import ssl
 import statcode
 from time import sleep
 
-HOST = socket.gethostname()
-PORT = 6666
-SSL_VERSION = ssl.PROTOCOL_TLSv1
-WORK_DIR_ROOT = r'..\workspace'
-VALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_'
 CONTENT_SIZE = 4 * 1024
 BUFFER_SIZE = 5 * 1024
-CERT_FILE = r'..\..\cert.pem'
-KEY_FILE = r'..\..\key.pem'
-
-
-def str_valid(_str):
-    """
-    judge if a str is valid or not
-    :param _str: a string
-    :return: a boolean
-    """
-    valid = True
-    for ch in _str:
-        if ch not in VALID_CHARS:
-            valid = False
-    return valid
+WORK_DIR_ROOT = r'..\workspace'
 
 
 class FtpClient:
@@ -183,22 +164,4 @@ class FtpClient:
 
 
 if __name__ == '__main__':
-    """
-    host = socket.gethostname()
-    port = 6666
-    work_dir_root = r'..\workspace'
-    try:
-        client_socket = ssl.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
-    except socket.error:
-        print("Failed to create socket!")
-        sys.exit()
-    client_socket.connect((host, port))
-    file_meta = client_socket.recv(1024)
-    file_meta = pickle.loads(file_meta)
-    print(file_meta)
-    file_content = pickle.loads(client_socket.recv(5 * 1024))
-    with open(os.path.join(work_dir_root, file_meta['name']), 'wb') as f:
-        f.write(file_content['content'])
-    client_socket.close()
-    """
     pass
