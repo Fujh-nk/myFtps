@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>920</width>
-    <height>614</height>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>770</x>
-      <y>460</y>
+      <y>430</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>770</x>
-      <y>520</y>
+      <y>500</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>770</x>
-      <y>400</y>
+      <y>580</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -73,7 +73,7 @@
     <property name="geometry">
      <rect>
       <x>770</x>
-      <y>340</y>
+      <y>360</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -115,7 +115,7 @@
     <property name="geometry">
      <rect>
       <x>770</x>
-      <y>280</y>
+      <y>290</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -281,6 +281,19 @@
     </property>
     <property name="autoDefault">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="name_input">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>580</y>
+      <width>691</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
