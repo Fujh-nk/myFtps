@@ -149,7 +149,7 @@ class FtpClient:
             return False, 'Failed to open file'
         return True, None
 
-    def delete(self, obj, obj_type):
+    def delete(self, obj, obj_type='FILE'):
         frame = {'op_type': statcode.FILE_OP,
                  'op_code': statcode.FILE_DEL_REQ,
                  'content': obj}
