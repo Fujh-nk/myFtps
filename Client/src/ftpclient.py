@@ -61,10 +61,12 @@ class FtpClient:
                 return True, None
         return False, 'User not log in'
 
-    def cancel(self, user, passwd):
+    def reg_or_cancel(self, user, passwd, op=True):
         frame = {'op_type': statcode.USER_OP,
                  'op_code': statcode.USER_DEL_REQ,
                  'content': {'username': user, 'password': passwd}}
+        if op:
+            frame['op_code'] = statcode.USER_REG_REQ
         resp = self.__send_req_and_recv_resp(frame)
         if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
             return True, None
