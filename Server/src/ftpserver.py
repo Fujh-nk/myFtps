@@ -25,6 +25,8 @@ def str_valid(_str):
     :param _str: a string
     :return: a boolean
     """
+    if len(_str) == 0:
+        return False
     valid = True
     for ch in _str:
         if ch not in VALID_CHARS:
