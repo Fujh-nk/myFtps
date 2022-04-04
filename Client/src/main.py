@@ -81,7 +81,7 @@ class MyFuncBind:
 
     def btn_reg_clicked(self):
         username, password = self.__get_user_passwd()
-        ok, msg = self.__client.reg_or_cancel(username, password)
+        ok, msg = self.__client.reg_or_cancel(username, password, True)
         if ok:
             self.ui_init()
             QMessageBox.information(MainWindow, 'Info', 'Register ok, input again to log in')

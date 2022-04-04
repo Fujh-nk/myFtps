@@ -44,5 +44,8 @@ def release_user():
 
 if __name__ == '__main__':
     init()
-    ftpserver.FtpServer.start_server(ftpserver.HOST, ftpserver.PORT)
+    try:
+        ftpserver.FtpServer.start_server(ftpserver.HOST, ftpserver.PORT)
+    except:
+        sys.exit()
     pass
