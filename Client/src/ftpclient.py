@@ -4,6 +4,7 @@ import sys
 import threading
 import os
 import ssl
+import struct
 import statcode
 from time import sleep
 
@@ -20,6 +21,7 @@ class FtpClient:
                                                 certfile=cert,
                                                 keyfile=key,
                                                 ssl_version=ssl_version)
+            self.__ssl_socket.connect((host, port))
         except socket.error:
             print("Failed to create socket!")
             sys.exit()
@@ -27,14 +29,28 @@ class FtpClient:
         self.port = port
         self.username = None
 
+    def __recv_content(self):
+        b_length = self.__ssl_socket.recv(4)
+        r_len = len(b_length)
+        while r_len != 4:
+            b_length = self.__ssl_socket.recv(4)
+            r_len = len(b_length)
+        length = struct.unpack('>I', b_length)[0]
+        return pickle.loads(self.__ssl_socket.recv(length))
+
+    def __send_frame(self, frame):
+        tmp = pickle.dumps(frame)
+        self.__ssl_socket.send(struct.pack('>I', len(tmp)))
+        self.__ssl_socket.send(tmp)
+
     def __heart_beat(self):
         while self.username is not None:
             sleep(30)
-            self.__ssl_socket.send(pickle.dumps({'op_code': statcode.SERVER_OP}))
+            self.__send_frame({'op_code': statcode.SERVER_OP})
 
     def __send_req_and_recv_resp(self, frame):
-        self.__ssl_socket.send(pickle.dumps(frame))
-        return pickle.loads(self.__ssl_socket.recv(BUFFER_SIZE))
+        self.__send_frame(frame)
+        return self.__recv_content()
 
     def login(self, user, passwd):
         if self.username is not None:
@@ -45,7 +61,6 @@ class FtpClient:
         resp = self.__send_req_and_recv_resp(frame)
         if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
             self.username = user
-            self.__ssl_socket.connect((self.host, self.port))
             threading.Thread(target=self.__heart_beat).start()
             return True, None
         return False, resp['content']
@@ -109,11 +124,11 @@ class FtpClient:
         # start to recv file from server
         try:
             with open(os.path.join(WORK_DIR_ROOT, obj), 'wb') as f:
-                frame = pickle.loads(self.__ssl_socket.recv(BUFFER_SIZE))
+                frame = self.__recv_content()
                 if frame['op_type'] == statcode.FILE_OP and frame['op_code'] == statcode.FILE_META:
                     obj_size = frame['content']['size']
                     while obj_size > 0:
-                        frame = pickle.loads(self.__ssl_socket.recv(BUFFER_SIZE))
+                        frame = self.__recv_content()
                         if frame['op_type'] == statcode.FILE_OP and frame['op_code'] == statcode.FILE_CONT:
                             f.write(frame['content'])
                             obj_size -= len(frame['content'])
@@ -140,11 +155,11 @@ class FtpClient:
             frame = {'op_type': statcode.FILE_OP,
                      'op_code': statcode.FILE_META,
                      'content': {'name': os.path.basename(obj), 'size': os.path.getsize(obj)}}
-            self.__ssl_socket.send(pickle.dumps(frame))
+            self.__send_frame(frame)
             frame['op_code'] = statcode.FILE_CONT
             with open(obj, 'rb') as f:
                 frame['content'] = f.read(CONTENT_SIZE)
-                self.__ssl_socket.send(pickle.dumps(frame))
+                self.__send_frame(frame)
         except OSError:
             return False, 'Failed to open file'
         return True, None
@@ -166,4 +181,30 @@ class FtpClient:
 
 
 if __name__ == '__main__':
+    """
+    host = socket.gethostname()
+    port = 6666
+    work_dir_root = '../workspace'
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    except socket.error:
+        print("Failed to create socket!")
+        sys.exit()
+    client_socket.connect((host, port))
+    a = ''
+    while len(a) != 4:
+        a = client_socket.recv(4)
+    print(a, len(a))
+    length = struct.unpack('>I', a)[0]
+    print(length)
+    file_meta = client_socket.recv(length)
+    file_meta = pickle.loads(file_meta)
+    print(file_meta)
+    length = struct.unpack('>I', client_socket.recv(4))[0]
+    print(length)
+    file_content = pickle.loads(client_socket.recv(length))
+    with open(os.path.join(work_dir_root, file_meta['name']), 'wb') as f:
+        f.write(file_content['content'])
+    client_socket.close()
+    """
     pass

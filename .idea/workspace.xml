@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="update code">
+    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="update code for cmd running tips">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/ftpclient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/ftpclient.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/workspace/text.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Client/workspace/text.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/ftpserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/ftpserver.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/ops/mydb.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/ops/mydb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/workspace/test/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/workspace/test/1.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +66,8 @@
       <recent name="D:\Workspaces\MyCodes\PythonCodes\myFtps\Server\src\ops" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main (1)">
-    <configuration name="deploy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.ftpclient">
+    <configuration name="ftpclient" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="myFtps" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -70,12 +75,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Client/src" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/deploy.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Client/src/ftpclient.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -173,19 +178,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.deploy" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.ftpserver" />
       <item itemvalue="Python.mainwindow1" />
       <item itemvalue="Python.main (1)" />
+      <item itemvalue="Python.ftpclient" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ftpclient" />
+        <item itemvalue="Python.ftpserver" />
         <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.mainwindow1" />
-        <item itemvalue="Python.ftpserver" />
-        <item itemvalue="Python.deploy" />
       </list>
     </recent_temporary>
   </component>
@@ -212,7 +217,7 @@
       <workItem from="1648772697911" duration="7205000" />
       <workItem from="1648792902150" duration="11699000" />
       <workItem from="1648876689612" duration="9778000" />
-      <workItem from="1649043335619" duration="2973000" />
+      <workItem from="1649043335619" duration="9695000" />
     </task>
     <task id="LOCAL-00001" summary="config">
       <created>1647938338993</created>
@@ -466,7 +471,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649043643612</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="update code for cmd running tips">
+      <created>1649046813199</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1649046813199</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -487,7 +499,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update for dev envs description" />
     <MESSAGE value="update for database(using sqlite) op" />
     <MESSAGE value="update for FTP op head" />
     <MESSAGE value="update for statcode.py" />
@@ -512,10 +523,11 @@
     <MESSAGE value="update mainwindow.py for add name_input LineEdit" />
     <MESSAGE value="update client code for ui binding processing function" />
     <MESSAGE value="update code" />
-    <option name="LAST_COMMIT_MESSAGE" value="update code" />
+    <MESSAGE value="update code for cmd running tips" />
+    <option name="LAST_COMMIT_MESSAGE" value="update code for cmd running tips" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/myFtps$ftpclient.coverage" NAME="ftpclient Coverage Results" MODIFIED="1648286075291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Client/src" />
+    <SUITE FILE_PATH="coverage/myFtps$ftpclient.coverage" NAME="ftpclient Coverage Results" MODIFIED="1649051247289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Client/src" />
     <SUITE FILE_PATH="coverage/myFtps$dir_op.coverage" NAME="dir_op Coverage Results" MODIFIED="1648635099084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src/ops" />
     <SUITE FILE_PATH="coverage/myFtps$mydb.coverage" NAME="mydb Coverage Results" MODIFIED="1648635696332" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src/ops" />
     <SUITE FILE_PATH="coverage/myFtps$file_op.coverage" NAME="file_op Coverage Results" MODIFIED="1648626806388" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src/ops" />
@@ -523,7 +535,7 @@
     <SUITE FILE_PATH="coverage/myFtps$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1649045252395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
     <SUITE FILE_PATH="coverage/myFtps$ace.coverage" NAME="ace Coverage Results" MODIFIED="1648449800729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src/ops" />
     <SUITE FILE_PATH="coverage/myFtps$user_op.coverage" NAME="user_op Coverage Results" MODIFIED="1648539011622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src/ops" />
-    <SUITE FILE_PATH="coverage/myFtps$ftpserver.coverage" NAME="ftpserver Coverage Results" MODIFIED="1648711232319" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
+    <SUITE FILE_PATH="coverage/myFtps$ftpserver.coverage" NAME="ftpserver Coverage Results" MODIFIED="1649051241685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
     <SUITE FILE_PATH="coverage/myFtps$mydb__1_.coverage" NAME="mydb (1) Coverage Results" MODIFIED="1647997215730" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
     <SUITE FILE_PATH="coverage/myFtps$serverlog.coverage" NAME="serverlog Coverage Results" MODIFIED="1648635631722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src" />
     <SUITE FILE_PATH="coverage/myFtps$acl_op.coverage" NAME="acl_op Coverage Results" MODIFIED="1648523290135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Server/src/ops" />

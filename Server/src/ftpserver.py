@@ -5,6 +5,7 @@ import pickle
 import sys
 import threading
 import ssl
+import struct
 from serverlog import MyLogger
 import statcode
 from Server.src.ops import dir_op, file_op, user_op, userdb_op
@@ -38,17 +39,23 @@ class MyHandle(socketserver.StreamRequestHandler):
     def handle(self):
         my_server = None
         while True:
-            data = pickle.loads(self.request.recv(BUFFER_SIZE))
+            b_length = self.request.recv(4)
+            r_len = len(b_length)
+            while r_len != 4:
+                b_length = self.request.recv(4)
+                r_len = len(b_length)
+            length = struct.unpack('>I', b_length)[0]
+            data = pickle.loads(self.request.recv(length))
             # any server_op package from client used for heart beat
             if data['op_type'] == statcode.SERVER_OP:
                 continue
             if my_server is None:
-                my_server = FtpServer(self.request)
+                my_server = FtpServer(self.request, self.client_address)
             try:
                 getattr(my_server, data['op_type'])(data['op_code'], data['content'])
             except AttributeError:
                 MyLogger.warning('An undefined operation({}) was attempted by address({})'.format(data['op_type'],
-                                                                                                  self.request.client_address))
+                                                                                                  self.client_address))
 
 
 class MySSLTCPServer(socketserver.TCPServer):
@@ -78,9 +85,9 @@ class FtpServer:
     __socket = None
     __root = FILE_PATH_ROOT
 
-    def __init__(self, conn):
+    def __init__(self, conn, address):
         self.conn = conn
-        self.address = conn.client_address
+        self.address = address
         self.username = None
         self.cwd = None  # current work dir
         self.send_fd = None
@@ -140,6 +147,11 @@ class FtpServer:
         else:
             MyLogger.warning('An undefined {} operation({}) was attempted by user({})'.format(op, code, self.username))
 
+    def __send_frame(self, ret_data):
+        frame = pickle.dumps(ret_data)
+        self.conn.send(struct.pack('>I', len(frame)))
+        self.conn.send(frame)
+
     def user_op(self, code, content):
         closed = False
         ret_data = {'op_type': statcode.SERVER_OP, 'op_code': statcode.SERVER_ERR}
@@ -197,7 +209,7 @@ class FtpServer:
         else:
             self.__log_op_warning('user', code)
             return
-        self.conn.send(pickle.dumps(ret_data))
+        self.__send_frame(ret_data)
         if closed:
             self.conn.close()
 
@@ -221,7 +233,7 @@ class FtpServer:
             self.__dir_log('delete', os.path.join(self.cwd, content), ret_data['op_code'])
         else:
             self.__log_op_warning('dir', code)
-        self.conn.send(pickle.dumps(ret_data))
+        self.__send_frame(ret_data)
 
     def file_op(self, code, content):
         ret_data = {'op_type': statcode.SERVER_OP, 'op_code': statcode.SERVER_ERR}
@@ -247,7 +259,7 @@ class FtpServer:
             return
         else:
             self.__log_op_warning('file', code)
-        self.conn.send(pickle.dumps(ret_data))
+        self.__send_frame(ret_data)
 
     def send_file(self):
         obj_size = os.path.getsize(os.path.join(FILE_PATH_ROOT, self.cwd, self.send_name))
@@ -256,11 +268,11 @@ class FtpServer:
             'op_code': statcode.FILE_META,
             'content': {'name': self.send_name, 'size': obj_size}
         }
-        self.conn.send(pickle.dumps(frame))
+        self.__send_frame(frame)
         frame['op_code'] = statcode.FILE_CONT
         while obj_size > 0:
             frame['content'] = self.send_fd.read(CONTENT_SIZE)
-            self.conn.send(pickle.dumps(frame))
+            self.__send_frame(frame)
             obj_size -= CONTENT_SIZE
         self.send_fd.close()
         self.send_fd = None
@@ -281,10 +293,9 @@ class FtpServer:
 
 
 if __name__ == '__main__':
-    '''
     host = socket.gethostname()
     port = 6666
-    file_path = '../workspace/text.txt'
+    file_path = r'..\workspace\test\1.txt'
     try:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     except socket.error:
@@ -298,8 +309,9 @@ if __name__ == '__main__':
             'name': 'text.txt',
             'size': os.path.getsize(file_path)
         }
-
-        conn.send(pickle.dumps(file_meta))
+        tmp = pickle.dumps(file_meta)
+        conn.send(struct.pack('>I', len(tmp)))
+        conn.send(tmp)
         with open(file_path, 'rb') as f:
             data = f.read(4 * 1024)
         file_content = {
@@ -307,8 +319,8 @@ if __name__ == '__main__':
             'num': 0,
             'content': data
         }
-        conn.send(pickle.dumps(file_content))
+        tmp = pickle.dumps(file_content)
+        conn.send(struct.pack('>I', len(tmp)))
+        conn.send(tmp)
         conn.close()
-    '''
-    print(os.path.join(FILE_PATH_ROOT, ''))
     pass

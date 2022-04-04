@@ -51,6 +51,5 @@ if __name__ == '__main__':
         print('Starting server...')
         ftpserver.FtpServer.start_server(ftpserver.HOST, ftpserver.PORT)
     except:
-        print('Failed to start server...')
         sys.exit()
     pass

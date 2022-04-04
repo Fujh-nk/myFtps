@@ -10,7 +10,8 @@ config = {
     'mincached': 5,
     'maxcached': 0,
     'maxusage': None,
-    'blocking': True
+    'blocking': True,
+    'check_same_thread': False
 }
 
 CREATE_TABLE_SQL = '''
