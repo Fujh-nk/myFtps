@@ -36,6 +36,7 @@ class MyFuncBind:
         self.__ui = ui
         self.__client = client
         self.__cur_path = None
+        self.__logged = False
 
     def ui_init(self):
         self.__ui.tip_user.setText('User')
@@ -48,23 +49,24 @@ class MyFuncBind:
         self.__ui.cur_dir_list.clear()
 
     def btn_login_clicked(self):
-        username = self.__ui.edit_user.text()
-        if not str_valid(username):
-            QMessageBox.information(MainWindow, 'Tips', 'Username invalid')
-        password = self.__ui.edit_passwd.text()
-        ok, msg = self.__client.login(username, password)
-        if ok:
-            self.__ui.tip_user.setText('User (logged in)')
-            self.__ui.edit_passwd.setText('')
-            self.__cur_path = '\\' + username
-            self.__ui.cur_path.setText(self.__cur_path)
-        else:
-            QMessageBox.critical(MainWindow, 'Error', msg)
+        username, password = self.__get_user_passwd()
+        if username is not None and password is not None:
+            ok, msg = self.__client.login(username, password)
+            if ok:
+                self.__logged = True
+                self.__ui.tip_user.setText('User (logged in)')
+                self.__ui.edit_passwd.setText('')
+                self.__cur_path = '\\' + username
+                self.__ui.cur_path.setText(self.__cur_path)
+                self.btn_refresh_clicked()
+            else:
+                QMessageBox.critical(MainWindow, 'Error', msg)
 
     def btn_logout_clicked(self):
         ok, msg = self.__client.logout()
         if ok:
             self.ui_init()
+            self.__logged = False
         else:
             QMessageBox.critical(MainWindow, 'Error', msg)
 
@@ -72,36 +74,43 @@ class MyFuncBind:
         username = self.__ui.edit_user.text()
         if not str_valid(username):
             QMessageBox.information(MainWindow, 'Tips', 'Username invalid')
-            return
+            return None, None
         password = self.__ui.edit_passwd.text()
         if len(password) == 0:
             QMessageBox.information(MainWindow, 'Info', 'Please input password')
-            return
+            return None, None
         return username, password
 
     def btn_reg_clicked(self):
         username, password = self.__get_user_passwd()
-        ok, msg = self.__client.reg_or_cancel(username, password, True)
-        if ok:
-            self.ui_init()
-            QMessageBox.information(MainWindow, 'Info', 'Register ok, input again to log in')
-        else:
-            QMessageBox.critical(MainWindow, 'Error', msg)
-
-    def btn_cancel_clicked(self):
-        username, password = self.__get_user_passwd()
-        ok, msg = self.__client.login(username, password)[0]
-        if not ok:
-            QMessageBox.critical(MainWindow, 'Error', msg)
-        if QMessageBox.question(MainWindow, 'Confirm', 'Are you sure to cancel user?') == QMessageBox.Yes:
-            ok, msg = self.__client.reg_or_cancel(username, password, False)
+        if username is not None and password is not None:
+            ok, msg = self.__client.reg_or_cancel(username, password, True)
             if ok:
                 self.ui_init()
-                QMessageBox.information(MainWindow, 'Info', 'Cancelled ok')
+                QMessageBox.information(MainWindow, 'Info', 'Register ok, input again to log in')
             else:
                 QMessageBox.critical(MainWindow, 'Error', msg)
 
+    def btn_cancel_clicked(self):
+        username, password = self.__get_user_passwd()
+        if username is not None and password is not None:
+            if not self.__logged:
+                ok, msg = self.__client.login(username, password)
+                if not ok:
+                    QMessageBox.critical(MainWindow, 'Error', msg)
+            if QMessageBox.question(MainWindow, 'Confirm', 'Are you sure to cancel user?') == QMessageBox.Yes:
+                ok, msg = self.__client.reg_or_cancel(username, password, False)
+                if ok:
+                    self.ui_init()
+                    self.__logged = False
+                    QMessageBox.information(MainWindow, 'Info', 'Cancelled ok')
+                else:
+                    QMessageBox.critical(MainWindow, 'Error', msg)
+
     def btn_upload_clicked(self):
+        if not self.__logged:
+            QMessageBox.information(MainWindow, 'Info', 'User not log in')
+            return
         path = self.__ui.obj_path.text()
         if not os.path.exists(path):
             QMessageBox.warning(MainWindow, 'Warning', 'Please select file first')
@@ -119,6 +128,9 @@ class MyFuncBind:
         self.__ui.cur_dir_list.addItems(content['file'])
 
     def btn_refresh_clicked(self):
+        if not self.__logged:
+            QMessageBox.information(MainWindow, 'Info', 'User not log in')
+            return
         ok, msg = self.__client.get_dir('')
         if ok:
             self.__set_list(msg)
@@ -126,6 +138,9 @@ class MyFuncBind:
             QMessageBox.critical(MainWindow, 'Error', msg)
 
     def btn_cd_clicked(self):
+        if not self.__logged:
+            QMessageBox.information(MainWindow, 'Info', 'User not log in')
+            return
         obj = self.__ui.cur_dir_list.selectedItems()[0].text()
         if '(dir)' not in obj:
             QMessageBox.critical(MainWindow, 'Error', 'Please select dir to cd')
@@ -139,6 +154,9 @@ class MyFuncBind:
             QMessageBox.critical(MainWindow, 'Error', msg)
 
     def btn_new_dir_clicked(self):
+        if not self.__logged:
+            QMessageBox.information(MainWindow, 'Info', 'User not log in')
+            return
         obj = self.__ui.name_input.text()
         if not str_valid(obj):
             QMessageBox.critical(MainWindow, 'Error', 'Dir name invalid')
@@ -151,6 +169,9 @@ class MyFuncBind:
             QMessageBox.critical(MainWindow, 'Error', msg)
 
     def btn_download_clicked(self):
+        if not self.__logged:
+            QMessageBox.information(MainWindow, 'Info', 'User not log in')
+            return
         obj = self.__ui.cur_dir_list.selectedItems()[0].text()
         if '(dir)' in obj:
             QMessageBox.critical(MainWindow, 'Error', 'Please select file to download')
@@ -162,6 +183,9 @@ class MyFuncBind:
             QMessageBox.critical(MainWindow, 'Error', msg)
 
     def btn_delete_clicked(self):
+        if not self.__logged:
+            QMessageBox.information(MainWindow, 'Info', 'User not log in')
+            return
         obj = self.__ui.cur_dir_list.selectedItems()[0].text()
         if '(dir)' in obj and QMessageBox.Yes == QMessageBox.question(MainWindow, 'Confirm',
                                                                       'Are you sure to delete dir'
@@ -175,6 +199,9 @@ class MyFuncBind:
             QMessageBox.critical(MainWindow, 'Error', msg)
 
     def btn_files_clicked(self):
+        if not self.__logged:
+            QMessageBox.information(MainWindow, 'Info', 'User not log in')
+            return
         file_path, _ = QFileDialog.getOpenFileName(MainWindow,
                                                    'select file',
                                                    WORK_DIR_ROOT,
@@ -203,4 +230,9 @@ if __name__ == '__main__':
     myfb = MyFuncBind(ui, FtpClient(HOST, PORT, CERT_FILE, KEY_FILE, SSL_VERSION))
     myfb.ui_bind_function()
     MainWindow.show()
-    app.exec_()
+    try:
+        app.exec_()
+    except KeyboardInterrupt:
+        sys.exit()
+    app.exit()
+    sys.exit()

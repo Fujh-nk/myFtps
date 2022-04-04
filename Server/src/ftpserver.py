@@ -38,24 +38,31 @@ def str_valid(_str):
 class MyHandle(socketserver.StreamRequestHandler):
     def handle(self):
         my_server = None
-        while True:
-            b_length = self.request.recv(4)
-            r_len = len(b_length)
-            while r_len != 4:
+        try:
+            while True:
                 b_length = self.request.recv(4)
                 r_len = len(b_length)
-            length = struct.unpack('>I', b_length)[0]
-            data = pickle.loads(self.request.recv(length))
-            # any server_op package from client used for heart beat
-            if data['op_type'] == statcode.SERVER_OP:
-                continue
-            if my_server is None:
-                my_server = FtpServer(self.request, self.client_address)
-            try:
-                getattr(my_server, data['op_type'])(data['op_code'], data['content'])
-            except AttributeError:
-                MyLogger.warning('An undefined operation({}) was attempted by address({})'.format(data['op_type'],
-                                                                                                  self.client_address))
+                while r_len != 4:
+                    b_length = self.request.recv(4)
+                    r_len = len(b_length)
+                length = struct.unpack('>I', b_length)[0]
+                data = pickle.loads(self.request.recv(length))
+                # any server_op package from client used for heart beat
+                try:
+                    if data['op_type'] == statcode.SERVER_OP:
+                        continue
+                except KeyError:
+                    continue
+                if my_server is None:
+                    my_server = FtpServer(self.request, self.client_address)
+                try:
+                    getattr(my_server, data['op_type'])(data['op_code'], data['content'])
+                except AttributeError:
+                    MyLogger.warning('An undefined operation({}) was attempted by address({})'
+                                     ''.format(data['op_type'],
+                                               self.client_address))
+        except ConnectionResetError:
+            return
 
 
 class MySSLTCPServer(socketserver.TCPServer):
@@ -153,7 +160,6 @@ class FtpServer:
         self.conn.send(frame)
 
     def user_op(self, code, content):
-        closed = False
         ret_data = {'op_type': statcode.SERVER_OP, 'op_code': statcode.SERVER_ERR}
         if code == statcode.USER_REG_REQ:
             if not str_valid(content['username']):
@@ -177,6 +183,7 @@ class FtpServer:
                 MyLogger.info('{} tried to login with wrong username or password'.format(self.address))
                 ret_data['content'] = 'Wrong username or password'
             elif status == userdb_op.STATUS_USER_CANCELED:
+                ret_data['op_code'] = statcode.SERVER_REJ
                 MyLogger.info('{} tried to login with cancelled user({})'.format(self.address, content['username']))
                 ret_data['content'] = 'User had been cancelled'
             else:
@@ -185,16 +192,17 @@ class FtpServer:
         elif code == statcode.USER_LOGOUT_REQ:
             FtpServer.del_inline_user(self.username)
             self.username = None
+            self.cwd = None
             ret_data['op_code'] = statcode.SERVER_OK
-            closed = True
         elif code == statcode.USER_DEL_REQ:
             status = user_op.user_del(content['username'], content['password'])
             if status == userdb_op.STATUS_OK:
                 if content['username'] in FtpServer.get_inline_users():
                     FtpServer.del_inline_user(content['username'])
                 self.username = None
+                self.cwd = None
                 ret_data['op_code'] = statcode.SERVER_OK
-                closed = True
+                ret_data['content'] = 'User cancel ok'
             elif status == userdb_op.STATUS_NOT_EXIST:
                 MyLogger.info('{} tried to delete an unknown user'.format(self.address))
                 ret_data['content'] = 'Unknown username'
@@ -210,8 +218,6 @@ class FtpServer:
             self.__log_op_warning('user', code)
             return
         self.__send_frame(ret_data)
-        if closed:
-            self.conn.close()
 
     def __dir_log(self, op, path, code):
         MyLogger.info('User({}) {} dir({})-status({})'.format(self.username, op, path, code))
@@ -242,7 +248,7 @@ class FtpServer:
         if code == statcode.FILE_DOWNLOAD_REQ:
             ret_data['op_code'], self.send_fd = file_op.file_download(self.username, self.cwd, content)
             self.send_name = content
-            threading.Thread(target=self.send_file).start()
+            self.send_file()
         elif code == statcode.FILE_UPLOAD_REQ:
             ret_data['op_code'], self.recv_fd = file_op.file_download(self.username, self.cwd, content)
             self.recv_name = content

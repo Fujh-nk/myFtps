@@ -21,10 +21,10 @@ class FtpClient:
                                                 certfile=cert,
                                                 keyfile=key,
                                                 ssl_version=ssl_version)
-            self.__ssl_socket.connect((host, port))
         except socket.error:
             print("Failed to create socket!")
             sys.exit()
+        self.__ssl_socket.connect((host, port))
         self.host = host
         self.port = port
         self.username = None
@@ -63,17 +63,17 @@ class FtpClient:
             self.username = user
             threading.Thread(target=self.__heart_beat).start()
             return True, None
+        print()
         return False, resp['content']
 
     def logout(self):
         if self.username is not None:
             frame = {'op_type': statcode.USER_OP,
-                     'op_code': statcode.USER_LOGOUT_REQ}
-            resp = self.__send_req_and_recv_resp(frame)
-            if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
-                self.__ssl_socket.close()
-                self.username = None
-                return True, None
+                     'op_code': statcode.USER_LOGOUT_REQ,
+                     'content': ''}
+            self.__send_frame(frame)
+            self.username = None
+            return True, None
         return False, 'User not log in'
 
     def reg_or_cancel(self, user, passwd, op=True):
@@ -83,6 +83,7 @@ class FtpClient:
         if op:
             frame['op_code'] = statcode.USER_REG_REQ
         resp = self.__send_req_and_recv_resp(frame)
+        self.username = None
         if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
             return True, None
         return False, resp['content']
