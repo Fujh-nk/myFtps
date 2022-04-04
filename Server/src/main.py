@@ -2,6 +2,9 @@ import os
 from serverlog import MyLogger
 import sqlite3
 import sys
+
+sys.path.append(r'..\..\.')
+
 from Server.src.ops import mydb, user_op
 import ftpserver
 
@@ -45,7 +48,9 @@ def release_user():
 if __name__ == '__main__':
     init()
     try:
+        print('Starting server...')
         ftpserver.FtpServer.start_server(ftpserver.HOST, ftpserver.PORT)
     except:
+        print('Failed to start server...')
         sys.exit()
     pass
