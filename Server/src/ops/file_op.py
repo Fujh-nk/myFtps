@@ -56,5 +56,11 @@ def file_del(user, cwd, obj):
 
 if __name__ == '__main__':
     os.chdir(r'..\.')
-    file_del('test', 'test', '1.txt')
+    t = os.path.join('a', 'b', 'c', 'd')
+    print(t)
+    t = t.split('\\')
+    print(t)
+    print(t[:-1])
+    print(*t[:-1])
+    print(os.path.join(*t[:-1]))
     pass

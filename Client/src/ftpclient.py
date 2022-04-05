@@ -28,6 +28,7 @@ class FtpClient:
         self.host = host
         self.port = port
         self.username = None
+        self.is_beating = False
 
     def __recv_content(self):
         b_length = self.__ssl_socket.recv(4)
@@ -44,9 +45,11 @@ class FtpClient:
         self.__ssl_socket.send(tmp)
 
     def __heart_beat(self):
+        self.is_beating = True
         while self.username is not None:
             sleep(30)
             self.__send_frame({'op_code': statcode.SERVER_OP})
+        self.is_beating = False
 
     def __send_req_and_recv_resp(self, frame):
         self.__send_frame(frame)
@@ -61,9 +64,9 @@ class FtpClient:
         resp = self.__send_req_and_recv_resp(frame)
         if resp['op_type'] == statcode.SERVER_OP and resp['op_code'] == statcode.SERVER_OK:
             self.username = user
-            threading.Thread(target=self.__heart_beat).start()
+            if not self.is_beating:
+                threading.Thread(target=self.__heart_beat).start()
             return True, None
-        print()
         return False, resp['content']
 
     def logout(self):
@@ -71,7 +74,7 @@ class FtpClient:
             frame = {'op_type': statcode.USER_OP,
                      'op_code': statcode.USER_LOGOUT_REQ,
                      'content': ''}
-            self.__send_frame(frame)
+            self.__send_req_and_recv_resp(frame)
             self.username = None
             return True, None
         return False, 'User not log in'
@@ -117,6 +120,7 @@ class FtpClient:
                  'op_code': statcode.FILE_DOWNLOAD_REQ,
                  'content': obj}
         resp = self.__send_req_and_recv_resp(frame)
+        print(resp)
         if resp['op_type'] == statcode.SERVER_OP:
             if resp['op_code'] == statcode.SERVER_REJ:
                 return False, 'No right to access'

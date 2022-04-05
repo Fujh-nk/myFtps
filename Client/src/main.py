@@ -123,6 +123,7 @@ class MyFuncBind:
 
     def __set_list(self, content):
         self.__ui.cur_dir_list.clear()
+        self.__ui.cur_dir_list.addItem('(dir)-{}'.format('..\\'))
         for _dir in content['dir']:
             self.__ui.cur_dir_list.addItem('(dir)-{}'.format(_dir))
         self.__ui.cur_dir_list.addItems(content['file'])
@@ -147,7 +148,10 @@ class MyFuncBind:
             return
         ok, msg = self.__client.get_dir(obj[6:])
         if ok:
-            self.__cur_path = os.path.join(self.__cur_path, obj)
+            if obj[6:] == '..\\':
+                self.__cur_path = os.path.join(*self.__cur_path.split('\\')[:-1])
+            else:
+                self.__cur_path = os.path.join(self.__cur_path, obj[6:])
             self.__ui.cur_path.setText(self.__cur_path)
             self.__set_list(msg)
         else:
@@ -187,10 +191,13 @@ class MyFuncBind:
             QMessageBox.information(MainWindow, 'Info', 'User not log in')
             return
         obj = self.__ui.cur_dir_list.selectedItems()[0].text()
-        if '(dir)' in obj and QMessageBox.Yes == QMessageBox.question(MainWindow, 'Confirm',
-                                                                      'Are you sure to delete dir'
-                                                                      '(include all files in it)'):
-            ok, msg = self.__client.delete(obj, 'DIR')
+        if '(dir)' in obj:
+            if QMessageBox.Yes == QMessageBox.question(MainWindow, 'Confirm',
+                                                       'Are you sure to delete dir'
+                                                       '(include all files in it)'):
+                ok, msg = self.__client.delete(obj[6:], 'DIR')
+            else:
+                return
         else:
             ok, msg = self.__client.delete(obj, 'FILE')
         if ok:
@@ -227,12 +234,13 @@ if __name__ == '__main__':
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    myfb = MyFuncBind(ui, FtpClient(HOST, PORT, CERT_FILE, KEY_FILE, SSL_VERSION))
+    client = FtpClient(HOST, PORT, CERT_FILE, KEY_FILE, SSL_VERSION)
+    myfb = MyFuncBind(ui, client)
     myfb.ui_bind_function()
     MainWindow.show()
     try:
         app.exec_()
-    except KeyboardInterrupt:
+    finally:
+        app.exit()
+        client.logout()
         sys.exit()
-    app.exit()
-    sys.exit()

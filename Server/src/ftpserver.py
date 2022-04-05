@@ -138,6 +138,7 @@ class FtpServer:
             try:
                 FtpServer.__lock.acquire()
                 FtpServer.__inline_users.remove(user)
+                MyLogger.info('User({}) logged out'.format(user))
             except ValueError:
                 MyLogger.info('User({}) logged out tried to log out'.format(user))
             finally:
@@ -179,6 +180,7 @@ class FtpServer:
                 self.cwd = self.username = content['username']
                 FtpServer.add_inline_user(self.username)
                 ret_data['op_code'] = statcode.SERVER_OK
+                ret_data['content'] = 'User logged in'
             elif status == userdb_op.STATUS_NOT_EXIST or status == userdb_op.STATUS_WRONG_PASSWD:
                 MyLogger.info('{} tried to login with wrong username or password'.format(self.address))
                 ret_data['content'] = 'Wrong username or password'
@@ -227,7 +229,14 @@ class FtpServer:
         if self.username is None:
             return
         elif code == statcode.DIR_REQ:
-            if content != '':
+            if content == '..\\':
+                if self.cwd == self.username:
+                    ret_data['op_code'] = statcode.SERVER_REJ
+                    ret_data['content'] = 'No right to access'
+                    self.__send_frame(ret_data)
+                    return
+                self.cwd = os.path.join(*self.cwd.split('\\')[:-1])
+            elif content != '':
                 self.cwd = os.path.join(self.cwd, content)
             ret_data['op_code'], ret_data['content'] = dir_op.dir_get(self.username, self.cwd)
             self.__dir_log('get', self.cwd, ret_data['op_code'])
@@ -235,7 +244,7 @@ class FtpServer:
             ret_data['op_code'] = dir_op.dir_create(self.username, self.cwd, content)
             self.__dir_log('create', os.path.join(self.cwd, content), ret_data['op_code'])
         elif code == statcode.DIR_DEL_REQ:
-            ret_data['op_code'] = dir_op.dir_create(self.username, self.cwd, content)
+            ret_data['op_code'] = dir_op.dir_del(self.username, self.cwd, content)
             self.__dir_log('delete', os.path.join(self.cwd, content), ret_data['op_code'])
         else:
             self.__log_op_warning('dir', code)
@@ -243,14 +252,15 @@ class FtpServer:
 
     def file_op(self, code, content):
         ret_data = {'op_type': statcode.SERVER_OP, 'op_code': statcode.SERVER_ERR}
+        is_send = False
         if self.username is None:
             return
         if code == statcode.FILE_DOWNLOAD_REQ:
             ret_data['op_code'], self.send_fd = file_op.file_download(self.username, self.cwd, content)
             self.send_name = content
-            self.send_file()
+            is_send = True
         elif code == statcode.FILE_UPLOAD_REQ:
-            ret_data['op_code'], self.recv_fd = file_op.file_download(self.username, self.cwd, content)
+            ret_data['op_code'], self.recv_fd = file_op.file_upload(self.username, self.cwd, content)
             self.recv_name = content
         elif code == statcode.FILE_DEL_REQ:
             ret_data['op_code'] = file_op.file_del(self.username, self.cwd, content)
@@ -266,6 +276,8 @@ class FtpServer:
         else:
             self.__log_op_warning('file', code)
         self.__send_frame(ret_data)
+        if is_send:
+            self.send_file()
 
     def send_file(self):
         obj_size = os.path.getsize(os.path.join(FILE_PATH_ROOT, self.cwd, self.send_name))
