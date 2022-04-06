@@ -1,3 +1,5 @@
+import os.path
+
 from Server.src.ops import userdb_op
 from Server.src.ops import acl_op
 
@@ -12,9 +14,16 @@ def user_reg(user, passwd):
     status = userdb_op.add_user(user, passwd)
     if status == userdb_op.STATUS_OK:
         try:
+            user_path = os.path.join(acl_op.WORK_REL_PATH, user)
+            if not os.path.exists(user_path):
+                os.mkdir(user_path)
             acl_op.acl_user(user, acl_op.ACL_OP_ADD)
-        except acl_op.AclError:
+        except acl_op.AclError as e:
             status = userdb_op.STATUS_FAILED
+            print(e)
+        except OSError as e:
+            status = userdb_op.STATUS_FAILED
+            print(e)
     return status
 
 
