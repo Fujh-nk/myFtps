@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="debug for parts of client and server" />
+    <list default="true" id="d03142ab-900b-4445-8165-47936d394333" name="Changes" comment="delete print debug info" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -515,7 +515,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update for log function" />
     <MESSAGE value="update for annotation document" />
     <MESSAGE value="update for ftpserver.py for user_op part" />
     <MESSAGE value="add access control" />
@@ -540,7 +539,8 @@
     <MESSAGE value="debug for socket pickle bug and sqlite connection bug" />
     <MESSAGE value="debug for user op parts of client and server code" />
     <MESSAGE value="debug for parts of client and server" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug for parts of client and server" />
+    <MESSAGE value="delete print debug info" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete print debug info" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/myFtps$ftpclient.coverage" NAME="ftpclient Coverage Results" MODIFIED="1649051247289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Client/src" />
