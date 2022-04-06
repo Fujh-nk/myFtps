@@ -20,10 +20,8 @@ def user_reg(user, passwd):
             acl_op.acl_user(user, acl_op.ACL_OP_ADD)
         except acl_op.AclError as e:
             status = userdb_op.STATUS_FAILED
-            print(e)
         except OSError as e:
             status = userdb_op.STATUS_FAILED
-            print(e)
     return status
 
 
