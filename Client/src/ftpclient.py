@@ -120,7 +120,6 @@ class FtpClient:
                  'op_code': statcode.FILE_DOWNLOAD_REQ,
                  'content': obj}
         resp = self.__send_req_and_recv_resp(frame)
-        print(resp)
         if resp['op_type'] == statcode.SERVER_OP:
             if resp['op_code'] == statcode.SERVER_REJ:
                 return False, 'No right to access'
